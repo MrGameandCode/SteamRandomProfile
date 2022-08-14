@@ -4,8 +4,8 @@
     "name": "Steam Randomize Profile",
     "version": "1.0",
   
-    "description": "Extesion para hacer que puedezs elegir aleatoriamente ciertos elementos en tu perfil de Steam",
-  
+    "description": "Extesion para hacer que puedas elegir aleatoriamente ciertos elementos en tu perfil de Steam",
+    "homepage_url": "https://github.com/MrGameandCode/SteamRandomProfile",
     "icons": {
       "48": "icons/Steam-Random-Logo.png"
     },
