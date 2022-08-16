@@ -425,6 +425,58 @@ function initEditShocases(){
   };
   const observer = new MutationObserver(callback);
   observer.observe(targetNode, config);
+  createButtonRandomShowcaseOrder(document.querySelector(".DialogBodyText"));
+}
+
+function createButtonRandomShowcaseOrder(parent){
+  let botonExistente = document.getElementById('button_RandomShowcasesOrder');
+  if(botonExistente == null){
+    const boton = document.createElement("button");
+    boton.setAttribute('id','button_RandomShowcasesOrder');
+    boton.style.background = 'linear-gradient(to right, #9bee84de 0%, #086000 60%)';
+    let botonClasses = [ 'DialogButton', '_DialogLayout', 'Focusable' ];
+    boton.classList.add(...botonClasses);
+    boton.innerText = 'Random showcases order';
+    boton.addEventListener("click", RandomizeShowcases);
+    parent.parentNode.insertBefore(boton,parent.nextSibling);
+  }
+}
+
+function RandomizeShowcases(){
+  alert("Working!");
+  var showcases = document.querySelectorAll(".profile_showcase_selector");
+  if(showcases.length != 0){
+    var positions = Array.from(Array(showcases.length).keys())
+    positions = shuffleArray(positions)
+    console.log(positions);
+    for (var i = 0; i <= showcases.length - 1; i++) {
+      showcases[i].setAttribute("SRP_desiredOrder", positions[i]);
+      console.log(showcases[i]);
+    }
+    for (var j = 0; j <= showcases.length -1; j++) {
+      console.log("Comparando " + showcases[j].getAttribute("SRP_desiredOrder") + " con " + j)
+      //SACAR lo del numero fuera y no resetear, sino descontarlo / sumarlo de esa variable
+      var numero = parseInt(showcases[j].getAttribute("SRP_desiredOrder"));
+
+
+      if(parseInt(numero) != parseInt(j)){
+        while(j != numero){
+          console.log(numero +"!=" + j);
+          if(j < numero){
+            numero--;
+            showcases[j].querySelector(".profile_showcase_sort_down").click();
+          } else{
+            numero++;    
+            showcases[j].querySelector(".profile_showcase_sort_up").click();
+          }
+        }
+      }
+    }
+    /*showcases = document.querySelectorAll(".profile_showcase_selector");
+    for (var i = 0; i <= showcases.length - 1; i++) {
+      console.log(showcases[i]);
+    }*/
+  }
 }
 
 function createButtonRandomBadgeShowcase(parent){
@@ -526,4 +578,20 @@ function pickRandomNumber(min,max){
   var r = Math.floor(Math.random() * (max - min + 1) + min); 
   console.log("Between " + min + " and " + max + " (both included), I choose " + r);
   return r;
+}
+
+//From w3docs
+function shuffleArray(array) {
+  let curId = array.length;
+  // There remain elements to shuffle
+  while (0 !== curId) {
+    // Pick a remaining element
+    let randId = Math.floor(Math.random() * curId);
+    curId -= 1;
+    // Swap it with the current element.
+    let tmp = array[curId];
+    array[curId] = array[randId];
+    array[randId] = tmp;
+  }
+  return array;
 }
