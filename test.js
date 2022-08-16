@@ -443,7 +443,6 @@ function createButtonRandomShowcaseOrder(parent){
 }
 
 function RandomizeShowcases(){
-  alert("Working!");
   var showcases = document.querySelectorAll(".profile_showcase_selector");
   if(showcases.length != 0){
     var positions = Array.from(Array(showcases.length).keys())
@@ -455,7 +454,6 @@ function RandomizeShowcases(){
     }
     for (var j = 0; j <= showcases.length -1; j++) {
       console.log("Comparando " + showcases[j].getAttribute("SRP_desiredOrder") + " con " + j)
-      //SACAR lo del numero fuera y no resetear, sino descontarlo / sumarlo de esa variable
       var numero = parseInt(showcases[j].getAttribute("SRP_desiredOrder"));
 
 
