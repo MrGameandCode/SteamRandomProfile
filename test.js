@@ -385,19 +385,15 @@ function initEditShocases(){
           for(var i = 0; i <= mutation.addedNodes.length; i++){
             if(mutation.addedNodes[i].className == 'newmodal'){
              	console.log("%c Se ha abierto un modal", 'background: #222; color: #bada55'); 
-              console.log(mutation.addedNodes[i]);
-              console.log(mutation.addedNodes[i].querySelector(".showcase_achievement_picker"));
               var elemento = mutation.addedNodes[i].querySelector(".showcase_achievement_picker");
               if(elemento != null){
-                console.log("%c ¡Estamos cargando los logros! Holy shit!", 'background: #222; color: #bada55'); 
+                //console.log("%c ¡Estamos cargando los logros! Holy shit!", 'background: #222; color: #bada55'); 
                 var elementoBotones = mutation.addedNodes[i].querySelector(".showcase_achievement_picker_select_ctn");
-                console.log(elementoBotones);
                 createButtonsRandomAchievements(elementoBotones);
               }
               elemento = mutation.addedNodes[i].querySelector(".group_list_results");
               if(elemento != null){
-                console.log("%c ¡Estamos cargando las insignias o los grupos! Holy shit!", 'background: #222; color: #bada55'); 
-                console.log(elemento);
+                //console.log("%c ¡Estamos cargando las insignias o los grupos! Holy shit!", 'background: #222; color: #bada55'); 
                 createButtonRandomBadgeShowcase(elemento);
               }
             }
@@ -426,6 +422,7 @@ function initEditShocases(){
   const observer = new MutationObserver(callback);
   observer.observe(targetNode, config);
   createButtonRandomShowcaseOrder(document.querySelector(".DialogBodyText"));
+  createButtonsRandomShowcaseContainer();
 }
 
 function createButtonRandomShowcaseOrder(parent){
@@ -453,7 +450,7 @@ function RandomizeShowcases(){
       console.log(showcases[i]);
     }
     for (var j = 0; j <= showcases.length -1; j++) {
-      console.log("Comparando " + showcases[j].getAttribute("SRP_desiredOrder") + " con " + j)
+      //console.log("Comparando " + showcases[j].getAttribute("SRP_desiredOrder") + " con " + j)
       var numero = parseInt(showcases[j].getAttribute("SRP_desiredOrder"));
 
 
@@ -475,6 +472,45 @@ function RandomizeShowcases(){
       console.log(showcases[i]);
     }*/
   }
+}
+
+function createButtonsRandomShowcaseContainer(){
+  var showcases = document.querySelectorAll(".profile_showcase_selector");
+  if(showcases.length != 0){
+    for (var i = 0; i <= showcases.length - 1; i++) {
+      var prevButton = showcases[i].querySelector(".customization_controls_nextprev a")
+      const boton = document.createElement("a");
+      boton.setAttribute('id','button_RandomAchieventShowcase_' + i);
+      boton.setAttribute('href','#');
+      let botonClasses = [ 'btn_grey_black', 'btn_medium' ];
+      boton.classList.add(...botonClasses);
+      boton.addEventListener("click", function(event){event.preventDefault();chooseRandomShowcase(boton)});
+      var spanNode = document.createElement("span");
+      spanNode.innerText = 'Random showcase';
+      boton.appendChild(spanNode);
+      prevButton.parentNode.insertBefore(boton,prevButton.nextSibling);
+      var whitespace = document.createTextNode("\u00A0\u00A0\u00A0");
+      prevButton.parentNode.insertBefore(whitespace,prevButton.nextSibling);
+    }
+  }
+}
+
+function chooseRandomShowcase(button){
+  console.log(button)
+  var numberElement = button.id.substr(-1);
+  console.log(numberElement);
+  var activeOptions = document.querySelectorAll("#showcase_"+numberElement+"_select option:not([disabled])");
+  var select = document.querySelector("#showcase_"+numberElement+"_select")
+  var posible = false;
+  var randomNumber;
+  while(!posible){
+    randomNumber = pickRandomNumber(1, activeOptions.length);//Check if it's disabled, so in that case we chose another number
+    if(!document.querySelector("#showcase_"+numberElement+"_select option:nth-child("+randomNumber+")").disabled){ 
+      posible = true;
+    }
+  }
+  select.selectedIndex=randomNumber - 1; //SelectedIndex and nth-child difference
+  select.dispatchEvent(new Event('change'));
 }
 
 function createButtonRandomBadgeShowcase(parent){
