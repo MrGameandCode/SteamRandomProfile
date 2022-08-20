@@ -11,6 +11,9 @@ function onUrlChange(current) {
 		let seccion = current.substr(current.indexOf("edit")+5);
     console.log("Localizando accion para seccion " + seccion);
     switch(seccion){    
+      case "info":
+        initEditInfo()
+      break;
       case "avatar":
         initEditAvatar()
       break;
@@ -39,6 +42,61 @@ function onUrlChange(current) {
     }
   }
 }
+/*Inicio de la seccion avatar*/
+function initEditInfo(){
+  console.log("Hemos llegado a INFO");
+  var buttonDiv = document.getElementsByClassName("chatentry_EmoticonPickerButton_K-lPM");
+  if(typeof buttonDiv[0] == 'undefined'){
+    const targetNode = document.getElementById('application_root');
+    const config = { attributes: true, childList: true, subtree: true };
+    const callback = function(mutationsList, observer) {
+        for(const mutation of mutationsList) {
+            if(mutation.type === 'childList') {
+              	var buttonDiv = document.getElementsByClassName("chatentry_EmoticonPickerButton_K-lPM");
+  							if(typeof buttonDiv[0] != 'undefined'){
+                  observer.disconnect();
+                  createButtonRandomInfoDescription(buttonDiv[0]);
+                }
+            }
+        }
+    };
+    const observer = new MutationObserver(callback);
+    observer.observe(targetNode, config);
+  } else{
+  	createButtonRandomInfoDescription(buttonDiv[0]);
+  }
+}
+function createButtonRandomInfoDescription(parent){
+  let botonExistente = document.getElementById('button_RandomQuote');
+  if(botonExistente == null){
+   	const boton = document.createElement("a");
+    boton.setAttribute('id','button_RandomQuote');
+    boton.style.background = 'linear-gradient(to right, #9bee84de 0%, #086000 60%)';
+    boton.style.maxWidth = '190px'
+    boton.style.padding = '10px'
+    boton.setAttribute('href','#');
+    let botonClasses = [ 'DialogButton', '_DialogLayout', 'Focusable' ];
+    boton.classList.add(...botonClasses);
+    boton.innerText = 'Add Random Quote';
+    boton.addEventListener("click", function(event){event.preventDefault();chooseRandomInfoQuote(boton)});
+    parent.parentNode.insertBefore(boton,parent.nextSibling);
+  }
+}
+function chooseRandomInfoQuote(){
+	var array_quotes = loadQuotes();
+  var chosedQuote = pickRandomNumber(0, array_quotes.length -1);
+  console.log(array_quotes[chosedQuote]);
+  var quote = "";
+  if(array_quotes[chosedQuote].game != undefined){
+    quote = "\n\"[i]" + array_quotes[chosedQuote].quote +"[/i]\" - " + array_quotes[chosedQuote].character + " (" + array_quotes[chosedQuote].game + ").";
+  } else{
+    quote = "\n\"[i]" + array_quotes[chosedQuote].quote +"[/i]\" - " + array_quotes[chosedQuote].character + ".";
+  }
+  var textarea = document.querySelector(".summary_summaryTextArea_2ipSt");
+  textarea.value += quote;
+  textarea.focus();
+}
+/*Final de la seccion avatar*/
 /*Inicio de la seccion avatar*/
 function initEditAvatar(){
   console.log("Hemos llegado a AVATAR");
@@ -628,4 +686,49 @@ function shuffleArray(array) {
     array[randId] = tmp;
   }
   return array;
+}
+
+function loadQuotes(){
+  var array_quotes = []
+  array_quotes.push({quote:"No gods or kings. Only man.", character:"Andrew Ryan"})
+  array_quotes.push({quote:"You brought this on yourself.", character:"Martin Walker"})
+  array_quotes.push({quote:"If you need to learn how to talk to a lady, ask your Mum.", character:"Bayonetta"})
+  array_quotes.push({quote:"A man chooses, a slave obeys.", character:"Andre Ryan"})
+  array_quotes.push({quote:"What is a man? A miserable little pile of secrets!", character:"Dracula", game:"Castlevania"});
+  array_quotes.push({quote:"The cake is a lie", character:""})
+  array_quotes.push({quote:"If our lives are already written, it would take a courageous man to change the script.", character:"Alan Wake"})
+  array_quotes.push({quote:"We are all our own worst enemy. But also our best teacher.", character:"Gouken"})
+  array_quotes.push({quote:"It ain't no secret I didn't get these scars falling over in church.", character:"John Marston"})
+  array_quotes.push({quote:"Here's a touchin' story. Once upon a time you died, and I lived happily ever after. The end.", character:"The Sniper", game: "Team Fortress 2"})
+  array_quotes.push({quote:"Shadow and light are two sides of the same coin, one cannot exist without the other.", character:"Princess Zelda"})
+  array_quotes.push({quote:"I raised you, and loved you, I've given you weapons, taught you techniques, endowed you with knowledge. There's nothing more for me to give you. All that's left for you to take is my life.", character:"The Boss", game:"Metal Gear Solid 3"})
+  array_quotes.push({quote:"At the end of the day, as long as there are two people left on the planet, someone is gonna want someone dead.", character:"The Sniper", game:"Team Fortress 2"})
+  array_quotes.push({quote:"The Lord Forgives Everything, But I'm Just A Prophet...So I Don't Have To. Amen.", character:"Father Comstock"})
+  array_quotes.push({quote:"You’ve met with a terrible fate, haven’t you?", character:"Happy Mask Salesman"})
+  array_quotes.push({quote:"War is when the young and stupid are tricked by the old and bitter into killing each other.", character:"Niko Bellic"})
+  array_quotes.push({quote:"Love Is Just A Chemical, We Give It Meaning By Choice.", character:"Eleanor Lamb"})
+  array_quotes.push({quote:"Nothing personal, I just had to shut you up.", character:"The Spy", game: "Team Fortress 2"})
+  array_quotes.push({quote:"Bring me a bucket, and I'll show you a bucket!", character:"Psycho"})
+  array_quotes.push({quote:"What is a man but the sum of his memories? We are the stories we live! The tales we tell ourselves!", character:"Clay Kaczmarek"})
+  array_quotes.push({quote:"Good! Now we can fight as warriors. Hand-to-hand, it is the basis of all combat. Only a fool trusts his life to a weapon.", character:"Gray Fox"})
+  array_quotes.push({quote:"Nothing is true, everything is permitted.", character:"Ezio Auditore"})
+  array_quotes.push({quote:"Snake. We're not tools of the government, or anyone else. Fighting was the only thing... the only thing I was good at. But... at least I always fought for what I believed in.", character:"Gray Fox"})
+  array_quotes.push({quote:"Get over here!", character:"Scorpion"})
+  array_quotes.push({quote:"Everyone thinks they’re the hero of their own story.", character:"Handsome Jack"})
+  array_quotes.push({quote:"Stand in the ashes of a trillion dead souls, and asks the ghosts if honor matters. The silence is your answer.", character:"Javik"})
+  array_quotes.push({quote:"If God had wanted you to live, He would not have created me!", character:"The Soldier", game:"Team Fortress 2"})
+  array_quotes.push({quote:"Don't make a girl a promise... If you know you can't keep it.", character:"Cortana"})
+  array_quotes.push({quote:"Did I ever tell you the definition of insanity?", character:"Vaas Montenegro"})
+  array_quotes.push({quote:"It’s time to kick ass and chew bubble gum…and I’m all outta gum.", character:"Duke Nukem"});
+  array_quotes.push({quote:"Grass grows, birds fly, sun shines and brother, I hurt people.", character:"The Scout", game:"Team Fortress 2"})
+  array_quotes.push({quote:"The truth, Walker, is that you’re here because you wanted to feel like something you’re not: A hero.", character:"John Konrad"})
+  array_quotes.push({quote:"You know, sweetheart, if there's one thing I've learned, it's this: nobody knows what's gonna happen at the end of the line, so you might as well enjoy the trip.", character:"Manny Calavera"})
+  array_quotes.push({quote:"NOTHING IS MORE BADASS THAN TREATING A WOMAN WITH RESPECT!", character:"Mr. Torgue’"})
+  array_quotes.push({quote:"I'll have two number 9s, a number 9 large, a number 6 with extra dip, a number 7, two number 45s, one with cheese, and a large soda.", character:"Big Smoke"})
+  array_quotes.push({quote:"The right man in the wrong place can make all the difference in the world. So, wake up, Mister Freeman. Wake up and...", character:"G-man"})
+  array_quotes.push({quote:"What is better – to be born good, or to overcome your evil nature through great effort?", character:"Paarthurnax"})
+  array_quotes.push({quote:"Science isn’t about why. It’s about why not.", character:"Cave Johson"})
+  
+
+  return array_quotes;
 }
