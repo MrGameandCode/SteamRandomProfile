@@ -18,6 +18,7 @@ A firefox extension to chose random options for your steam profile!
 - Randomize order of your showcases
 - Select random showcase
 - Add random quotes on the description in your profile, related to videogames
+- Put random quotes on the personalized info in your showcase, related to videogames
 
 ## Things we can't make it random right now:
 - Change Salien clothes
@@ -36,7 +37,6 @@ A firefox extension to chose random options for your steam profile!
 - Random screenshots
 - Random workshop item
 - Random guide
-- Put random quotes on the personalized info in your showcase, related to videogames
 - Put random emojis on the personalized info in your showcase
 
 ## Known bugs

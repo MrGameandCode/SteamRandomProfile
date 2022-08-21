@@ -78,11 +78,11 @@ function createButtonRandomInfoDescription(parent){
     let botonClasses = [ 'DialogButton', '_DialogLayout', 'Focusable' ];
     boton.classList.add(...botonClasses);
     boton.innerText = 'Add Random Quote';
-    boton.addEventListener("click", function(event){event.preventDefault();chooseRandomInfoQuote(boton)});
+    boton.addEventListener("click", function(event){event.preventDefault();chooseRandomInfoQuote(".summary_summaryTextArea_2ipSt")});
     parent.parentNode.insertBefore(boton,parent.nextSibling);
   }
 }
-function chooseRandomInfoQuote(){
+function chooseRandomInfoQuote(element){
 	var array_quotes = loadQuotes();
   var chosedQuote = pickRandomNumber(0, array_quotes.length -1);
   console.log(array_quotes[chosedQuote]);
@@ -92,7 +92,7 @@ function chooseRandomInfoQuote(){
   } else{
     quote = "\n\"[i]" + array_quotes[chosedQuote].quote +"[/i]\" - " + array_quotes[chosedQuote].character + ".";
   }
-  var textarea = document.querySelector(".summary_summaryTextArea_2ipSt");
+  var textarea = document.querySelector(element);
   textarea.value += quote;
   textarea.focus();
 }
@@ -481,6 +481,7 @@ function initEditShocases(){
   observer.observe(targetNode, config);
   createButtonRandomShowcaseOrder(document.querySelector(".DialogBodyText"));
   createButtonsRandomShowcaseContainer();
+  createButtonRandomQuoteShowcase(document.querySelector(".emoticon_container"));
 }
 
 function createButtonRandomShowcaseOrder(parent){
@@ -660,6 +661,23 @@ function createRandomGenericButtonShowcase(parent){
     boton.innerText = 'Random selection';
     boton.addEventListener("click", chooseRandomBadgeForShowcase);
     parent.prepend(boton); 
+  }
+}
+
+function createButtonRandomQuoteShowcase(parent){
+  let botonExistente = document.getElementById('button_RandomQuoteForShowcase');
+  if(botonExistente == null){
+   	const boton = document.createElement("a");
+    boton.setAttribute('id','button_RandomQuoteForShowcase');
+    boton.style.background = 'linear-gradient(to right, #9bee84de 0%, #086000 60%)';
+    boton.style.maxWidth = '190px'
+    boton.style.padding = '5px'
+    boton.setAttribute('href','#');
+    let botonClasses = [ 'DialogButton', '_DialogLayout', 'Focusable' ];
+    boton.classList.add(...botonClasses);
+    boton.innerText = 'Add Random Quote';
+    boton.addEventListener("click", function(event){event.preventDefault();chooseRandomInfoQuote("#showcase_8_notes")});
+    parent.parentNode.insertBefore(boton,parent.nextSibling);
   }
 }
 /*Final de la seccion showcases*/
