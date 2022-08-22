@@ -64,6 +64,13 @@ function initEditInfo(){
     observer.observe(targetNode, config);
   } else{
   	createButtonRandomInfoDescription(buttonDiv[0]);
+    createButtonRandomEmojisInfoDescription(buttonDiv[0]);
+    //Para los emojis:
+    //Primero, document.querySelector(".summary_formattingButton_LhNoI").click() 
+    //Luego, nos quedamos con los emojis que no sean recientes (miramos dentro de ese div si hay 1 o 2 divs, para saber cuales pillar)
+    //Metemos todos los textos en un array
+    //Seleccionamos al azar 1 o varios emojis
+    //Y con lo que sea, pulsamos el primer emoji y el resto lo encadenamos en el value.
   }
 }
 function createButtonRandomInfoDescription(parent){
@@ -94,6 +101,55 @@ function chooseRandomInfoQuote(element){
   }
   var textarea = document.querySelector(element);
   textarea.value += quote;
+  textarea.focus();
+}
+
+function createButtonRandomEmojisInfoDescription(parent){
+  let botonExistente = document.getElementById('button_RandomEmojis');
+  if(botonExistente == null){
+   	const boton = document.createElement("a");
+    boton.setAttribute('id','button_RandomEmojis');
+    boton.style.background = 'linear-gradient(to right, #9bee84de 0%, #086000 60%)';
+    boton.style.maxWidth = '190px'
+    boton.style.padding = '10px'
+    boton.setAttribute('href','#');
+    let botonClasses = [ 'DialogButton', '_DialogLayout', 'Focusable' ];
+    boton.classList.add(...botonClasses);
+    boton.innerText = 'Add Random Emojis';
+    boton.addEventListener("click", function(event){event.preventDefault();chooseRandomEmojis(".summary_summaryTextArea_2ipSt")});
+    parent.parentNode.insertBefore(boton,parent.nextSibling);
+  }
+}
+function chooseRandomEmojis(element){
+  document.querySelector(".summary_formattingButton_LhNoI").click();
+  //var divEmojis = document.querySelectorAll(".addonpicker_Content_1c-qe > div");
+  var divEmojis = document.querySelectorAll(".addonpicker_ItemList_2tnPH");
+  var correctDivEmojis;
+  if (divEmojis.length == 1){
+    correctDivEmojis = divEmojis[0]
+  } else{
+    correctDivEmojis = divEmojis[1]
+  }
+  console.log(correctDivEmojis)
+  var emojis = correctDivEmojis.querySelectorAll(".emoticon_emoticon_316r8");
+  console.log(emojis);
+  var array_emojis = [];
+  if(emojis.length != 0){
+    //Hacer un foreach y guardarnos en un array su data-copytext
+    for (var i = 0; i < emojis.length; i++) {
+      array_emojis.push(emojis[i].getAttribute("data-copytext"));
+    }
+  }
+  console.log(array_emojis);
+  var randomNumberEmojis = pickRandomNumber(1,array_emojis.length);
+  var emojis2add = "";
+  document.querySelector(".summary_formattingButton_LhNoI").click();
+  for (var i = 0; i < randomNumberEmojis; i++) {
+      emojis2add += array_emojis[pickRandomNumber(1,array_emojis.length - 1)];
+  }
+  console.log(emojis2add)
+  var textarea = document.querySelector(".summary_summaryTextArea_2ipSt");
+  textarea.value += emojis2add;
   textarea.focus();
 }
 /*Final de la seccion avatar*/
@@ -713,6 +769,7 @@ function loadQuotes(){
   array_quotes.push({quote:"If you need to learn how to talk to a lady, ask your Mum.", character:"Bayonetta"})
   array_quotes.push({quote:"A man chooses, a slave obeys.", character:"Andre Ryan"})
   array_quotes.push({quote:"What is a man? A miserable little pile of secrets!", character:"Dracula", game:"Castlevania"});
+  array_quotes.push({quote:"Do you have any idea how many lawyers are in hell?", character:"Ghost Rider"})
   array_quotes.push({quote:"The cake is a lie", character:""})
   array_quotes.push({quote:"If our lives are already written, it would take a courageous man to change the script.", character:"Alan Wake"})
   array_quotes.push({quote:"We are all our own worst enemy. But also our best teacher.", character:"Gouken"})
@@ -722,6 +779,7 @@ function loadQuotes(){
   array_quotes.push({quote:"I raised you, and loved you, I've given you weapons, taught you techniques, endowed you with knowledge. There's nothing more for me to give you. All that's left for you to take is my life.", character:"The Boss", game:"Metal Gear Solid 3"})
   array_quotes.push({quote:"At the end of the day, as long as there are two people left on the planet, someone is gonna want someone dead.", character:"The Sniper", game:"Team Fortress 2"})
   array_quotes.push({quote:"The Lord Forgives Everything, But I'm Just A Prophet...So I Don't Have To. Amen.", character:"Father Comstock"})
+  array_quotes.push({quote:"You ever thought of therapy? All you do is get pissed off at and with just about anything and anyone. I'm attempting conversation here with you. ", character:"Agent G"})
   array_quotes.push({quote:"You’ve met with a terrible fate, haven’t you?", character:"Happy Mask Salesman"})
   array_quotes.push({quote:"War is when the young and stupid are tricked by the old and bitter into killing each other.", character:"Niko Bellic"})
   array_quotes.push({quote:"Love Is Just A Chemical, We Give It Meaning By Choice.", character:"Eleanor Lamb"})
@@ -732,6 +790,7 @@ function loadQuotes(){
   array_quotes.push({quote:"Nothing is true, everything is permitted.", character:"Ezio Auditore"})
   array_quotes.push({quote:"Snake. We're not tools of the government, or anyone else. Fighting was the only thing... the only thing I was good at. But... at least I always fought for what I believed in.", character:"Gray Fox"})
   array_quotes.push({quote:"Get over here!", character:"Scorpion"})
+  array_quotes.push({quote:"Sorry, I'm married. Can't blame you for wanting' me, though.", character:"Hawkeye"})
   array_quotes.push({quote:"Everyone thinks they’re the hero of their own story.", character:"Handsome Jack"})
   array_quotes.push({quote:"Stand in the ashes of a trillion dead souls, and asks the ghosts if honor matters. The silence is your answer.", character:"Javik"})
   array_quotes.push({quote:"If God had wanted you to live, He would not have created me!", character:"The Soldier", game:"Team Fortress 2"})
@@ -740,13 +799,24 @@ function loadQuotes(){
   array_quotes.push({quote:"It’s time to kick ass and chew bubble gum…and I’m all outta gum.", character:"Duke Nukem"});
   array_quotes.push({quote:"Grass grows, birds fly, sun shines and brother, I hurt people.", character:"The Scout", game:"Team Fortress 2"})
   array_quotes.push({quote:"The truth, Walker, is that you’re here because you wanted to feel like something you’re not: A hero.", character:"John Konrad"})
+  array_quotes.push({quote:"You remember when we used to be friends, Jen? Yeah, neither do I.", character:"Hawkeye"})
+  array_quotes.push({quote:"You were a two-bit punk when we first met. You're a two-bit punk now.", character:"Iron Man"})
+  array_quotes.push({quote:"Mother fuck! ... What does a brother have to do to pacify a bitch!? I'm telling you G, I've tried my best with her. God, be my witness! I have shown respect, charm, under-fucking-standing. But that is the last fuckin' straw!", character:"Isaac Washington"})
   array_quotes.push({quote:"You know, sweetheart, if there's one thing I've learned, it's this: nobody knows what's gonna happen at the end of the line, so you might as well enjoy the trip.", character:"Manny Calavera"})
+  array_quotes.push({quote:"Fighting me? You were always headstrong, Clint. Didn't think you were stupid, too.", character:"She-Hulk"})
   array_quotes.push({quote:"NOTHING IS MORE BADASS THAN TREATING A WOMAN WITH RESPECT!", character:"Mr. Torgue’"})
   array_quotes.push({quote:"I'll have two number 9s, a number 9 large, a number 6 with extra dip, a number 7, two number 45s, one with cheese, and a large soda.", character:"Big Smoke"})
   array_quotes.push({quote:"The right man in the wrong place can make all the difference in the world. So, wake up, Mister Freeman. Wake up and...", character:"G-man"})
   array_quotes.push({quote:"What is better – to be born good, or to overcome your evil nature through great effort?", character:"Paarthurnax"})
+  array_quotes.push({quote:"Was that a 'Thanks for saving my worthless pig hide' I just heard, Lieutenant Limpdick?", character:"Varla Guns"})
   array_quotes.push({quote:"Science isn’t about why. It’s about why not.", character:"Cave Johson"})
+  array_quotes.push({quote:"I enjoy pain. It's like a good Chinese dinner, you know? With the sweet, and the sour? Expanding on that analogy, I will smile with delight, that's the sweet, as you scream for your fucking life. Of course, that's the sour. Ciao!", character:"Papa Caesar"})
+  array_quotes.push({quote:"Sorry, but there's no way I'm losing to an extra from Bambi.", character:"Nova", game:"Ultimate Marvel vs Capcom 3"})
+  array_quotes.push({quote:"Act like jerks, your planet gets eaten. It's called karma, dude.", character:"Nova", game:"Ultimate Marvel vs Capcom 3"})
+  array_quotes.push({quote:"Brother, you ugly. But not just ugly, like BIBLICAL ugly. Like 'you could model for death threads' ugly.", character:"Deadpool"})
+  array_quotes.push({quote:"Check me out. I'm the Ghost of Christmas 'Kick Your Ass'!", character:"Deadpool"})
   
+
 
   return array_quotes;
 }
