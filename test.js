@@ -122,7 +122,6 @@ function createButtonRandomEmojisInfoDescription(parent){
 }
 function chooseRandomEmojis(element){
   document.querySelector(".summary_formattingButton_LhNoI").click();
-  //var divEmojis = document.querySelectorAll(".addonpicker_Content_1c-qe > div");
   var divEmojis = document.querySelectorAll(".addonpicker_ItemList_2tnPH");
   var correctDivEmojis;
   if (divEmojis.length == 1){
@@ -130,24 +129,19 @@ function chooseRandomEmojis(element){
   } else{
     correctDivEmojis = divEmojis[1]
   }
-  console.log(correctDivEmojis)
   var emojis = correctDivEmojis.querySelectorAll(".emoticon_emoticon_316r8");
-  console.log(emojis);
   var array_emojis = [];
   if(emojis.length != 0){
-    //Hacer un foreach y guardarnos en un array su data-copytext
     for (var i = 0; i < emojis.length; i++) {
       array_emojis.push(emojis[i].getAttribute("data-copytext"));
     }
   }
-  console.log(array_emojis);
   var randomNumberEmojis = pickRandomNumber(1,array_emojis.length);
   var emojis2add = "";
   document.querySelector(".summary_formattingButton_LhNoI").click();
   for (var i = 0; i < randomNumberEmojis; i++) {
       emojis2add += array_emojis[pickRandomNumber(1,array_emojis.length - 1)];
   }
-  console.log(emojis2add)
   var textarea = document.querySelector(".summary_summaryTextArea_2ipSt");
   textarea.value += emojis2add;
   textarea.focus();
@@ -538,6 +532,7 @@ function initEditShocases(){
   createButtonRandomShowcaseOrder(document.querySelector(".DialogBodyText"));
   createButtonsRandomShowcaseContainer();
   createButtonRandomQuoteShowcase(document.querySelector(".emoticon_container"));
+  createButtonRandomEmojiShowcase(document.querySelector(".emoticon_container"));
 }
 
 function createButtonRandomShowcaseOrder(parent){
@@ -736,6 +731,46 @@ function createButtonRandomQuoteShowcase(parent){
     parent.parentNode.insertBefore(boton,parent.nextSibling);
   }
 }
+
+function createButtonRandomEmojiShowcase(parent){
+  let botonExistente = document.getElementById('button_RandomEmojisForShowcase');
+  if(botonExistente == null){
+   	const boton = document.createElement("a");
+    boton.setAttribute('id','button_RandomEmojisForShowcase');
+    boton.style.background = 'linear-gradient(to right, #9bee84de 0%, #086000 60%)';
+    boton.style.maxWidth = '190px'
+    boton.style.padding = '5px'
+    boton.setAttribute('href','#');
+    let botonClasses = [ 'DialogButton', '_DialogLayout', 'Focusable' ];
+    boton.classList.add(...botonClasses);
+    boton.innerText = 'Add Random Emojis';
+    boton.addEventListener("click", function(event){event.preventDefault();chooseRandomEmojisForInfoShowcase("#showcase_8_notes")});
+    parent.parentNode.insertBefore(boton,parent.nextSibling);
+  }
+}
+
+function chooseRandomEmojisForInfoShowcase(element){
+  document.querySelector(".emoticon_container span").click();
+  setTimeout(function(){
+    var emojis = document.querySelectorAll(".emoticon_option");
+    var array_emojis = [];
+    if(emojis.length != 0){
+      for (var i = 0; i < emojis.length; i++) {
+        array_emojis.push(emojis[i].getAttribute("data-emoticon"));
+      }
+    }
+    var randomNumberEmojis = pickRandomNumber(1,array_emojis.length);
+    var emojis2add = "";
+    for (var i = 0; i < randomNumberEmojis; i++) {
+        emojis2add += ":" + array_emojis[pickRandomNumber(1,array_emojis.length - 1)] + ":";
+    }
+    var textarea = document.querySelector(element);
+    textarea.value += emojis2add;
+    document.querySelector(".emoticon_container span").click();
+  },3000);
+  
+  //textarea.focus();
+}
 /*Final de la seccion showcases*/
 
 onUrlChange(lastUrl);
@@ -815,8 +850,6 @@ function loadQuotes(){
   array_quotes.push({quote:"Act like jerks, your planet gets eaten. It's called karma, dude.", character:"Nova", game:"Ultimate Marvel vs Capcom 3"})
   array_quotes.push({quote:"Brother, you ugly. But not just ugly, like BIBLICAL ugly. Like 'you could model for death threads' ugly.", character:"Deadpool"})
   array_quotes.push({quote:"Check me out. I'm the Ghost of Christmas 'Kick Your Ass'!", character:"Deadpool"})
-  
-
 
   return array_quotes;
 }
