@@ -65,12 +65,6 @@ function initEditInfo(){
   } else{
   	createButtonRandomInfoDescription(buttonDiv[0]);
     createButtonRandomEmojisInfoDescription(buttonDiv[0]);
-    //Para los emojis:
-    //Primero, document.querySelector(".summary_formattingButton_LhNoI").click() 
-    //Luego, nos quedamos con los emojis que no sean recientes (miramos dentro de ese div si hay 1 o 2 divs, para saber cuales pillar)
-    //Metemos todos los textos en un array
-    //Seleccionamos al azar 1 o varios emojis
-    //Y con lo que sea, pulsamos el primer emoji y el resto lo encadenamos en el value.
   }
 }
 function createButtonRandomInfoDescription(parent){
@@ -187,22 +181,16 @@ function createButtonRandomAvatar(parent){
 }
 
 function chooseRandomAvatar(){
-  /*Mirar si hay 2 avatarcollection_AvatarCollection_1UoAv. Si los hay, alert de que "tenemos que elegir uno de los 2 cuadros"
-  Cuando haya solo 1, contar si tenemos marcos. Si hay, estamos en marcos. Si no, estamos en avatares :)
-  */
-  
+  //We count if we have 1 or 2 avatarcollection_AvatarCollection_1UoAv. If we have 1, we are choosing frames, if not, we are choosing avatars
 	if(document.getElementsByClassName('avatarcollection_AvatarCollection_1UoAv').length == 1){
     if(document.getElementsByClassName("avatarcollection_FramePreview_16w1D").length != 0){
       console.log("%c chosing frames", 'background: #222; color: #bada55');
       let contenedorMarcos = document.querySelector('.avatarcollection_CollectionGroupAvatars_wWso7');
-      //let randomNumber = Math.floor(Math.random() * (contenedorMarcos.childNodes.length) + 0);
     	contenedorMarcos.childNodes[pickRandomNumber(0, contenedorMarcos.childNodes.length)].click();
     } else{
       console.log("%c chosing profile pic", 'background: #222; color: #bada55');
       let contenedoresAvatares = document.querySelectorAll('.avatarcollection_CollectionGroup_2kbA6 > .avatarcollection_CollectionGroupAvatars_wWso7'); //Pueden ser los comprados en la tienda de puntos o los de los juegos
-      //let randomContenedor = Math.floor(Math.random() * (contenedoresAvatares.length - 0 + 1) + 0); //Seleccionamos contenedor al azar
-      let randomContenedor = pickRandomNumber(0, contenedoresAvatares.length + 1); //Seleccionamos contenedor al azar
-      //let randomNumber = Math.floor(Math.random() * (contenedoresAvatares[randomContenedor].childNodes.length - 1) + 0);
+      let randomContenedor = pickRandomNumber(0, contenedoresAvatares.length + 1); //We choose a random group, then a random avatar from that group
       let randomNumber = pickRandomNumber(0, contenedoresAvatares[randomContenedor].childNodes.length - 1);
       console.log(contenedoresAvatares[randomContenedor].childNodes[randomNumber]);
       contenedoresAvatares[randomContenedor].childNodes[randomNumber].click();
@@ -224,7 +212,6 @@ function initEditBackground(){
               	var buttonDiv = document.getElementsByClassName("profileedit_SaveCancelButtons_2KJ8a");
   							if(typeof buttonDiv[0] != 'undefined'){
                   observer.disconnect();
-                	//alert("Ya podemos colocar el boton");
                   createButtonRandomBackground(buttonDiv[0]);
                 }
             }
@@ -361,7 +348,6 @@ function initEditTheme(){
               	var buttonDiv = document.getElementsByClassName("profileedit_SaveCancelButtons_2KJ8a");
   							if(typeof buttonDiv[0] != 'undefined'){
                   observer.disconnect();
-                	//alert("Ya podemos colocar el boton");
                   createButtonRandomTheme(buttonDiv[0]);
                 }
             }
@@ -495,20 +481,16 @@ function initEditShocases(){
              	console.log("%c Se ha abierto un modal", 'background: #222; color: #bada55'); 
               var elemento = mutation.addedNodes[i].querySelector(".showcase_achievement_picker");
               if(elemento != null){
-                //console.log("%c ¡Estamos cargando los logros! Holy shit!", 'background: #222; color: #bada55'); 
                 var elementoBotones = mutation.addedNodes[i].querySelector(".showcase_achievement_picker_select_ctn");
                 createButtonsRandomAchievements(elementoBotones);
               }
               elemento = mutation.addedNodes[i].querySelector(".group_list_results");
               if(elemento != null){
-                //console.log("%c ¡Estamos cargando las insignias o los grupos! Holy shit!", 'background: #222; color: #bada55'); 
                 createButtonRandomBadgeShowcase(elemento);
               }
             }
           }
         }
-        //Sacandolos justo debajo del primer for funcionan... asi que para la siguiente versión, sacarlos, sacar tambien el de insignias y mirar si con eso es suficiente. Pero antes. backup
-        //Review this, because I'm not sure why this works when there's a mutation, but not a childlist mutation.
         var elemento = document.querySelector(".group_list_results");
         if(elemento != null){
           console.log("%c ¡Estamos cargando las insignias o los grupos! Holy shit!", 'background: #222; color: #bada55'); 
@@ -560,10 +542,7 @@ function RandomizeShowcases(){
       console.log(showcases[i]);
     }
     for (var j = 0; j <= showcases.length -1; j++) {
-      //console.log("Comparando " + showcases[j].getAttribute("SRP_desiredOrder") + " con " + j)
       var numero = parseInt(showcases[j].getAttribute("SRP_desiredOrder"));
-
-
       if(parseInt(numero) != parseInt(j)){
         while(j != numero){
           console.log(numero +"!=" + j);
@@ -577,10 +556,6 @@ function RandomizeShowcases(){
         }
       }
     }
-    /*showcases = document.querySelectorAll(".profile_showcase_selector");
-    for (var i = 0; i <= showcases.length - 1; i++) {
-      console.log(showcases[i]);
-    }*/
   }
 }
 
@@ -645,7 +620,7 @@ function chooseRandomBadgeForShowcase(){
 function createButtonsRandomAchievements(parent){
   let botonExistente = document.getElementById('button_RandomGameForAchievent');
   if(botonExistente == null){
-    //Boton para que seleccione solo el juego
+    //Button for chosing only the game
    	const boton = document.createElement("button");
     boton.setAttribute('id','button_RandomGameForAchievent');
     boton.style.background = 'linear-gradient(to right, #0097c3 0%, #0035c3 60%)';
@@ -654,7 +629,7 @@ function createButtonsRandomAchievements(parent){
     boton.innerText = 'Random Game';
     boton.addEventListener("click", chooseRandomGameforListAchievements);
     parent.appendChild(boton); 
-    //Boton para que seleccione juego y logro
+    //Button for chosing the game and the achievement
     const boton2 = document.createElement("button");
     boton2.setAttribute('id','button_RandomAchievent');
     boton2.style.background = 'linear-gradient(to right, #9bee84de 0%, #086000 60%)';
@@ -673,7 +648,7 @@ function chooseRandomGameforListAchievements(){
   console.log("%c Opcion pulsada: juego al azar", 'background: #222; color: #bada55');
   var select = document.querySelector('.showcase_achievement_picker_select_ctn .gray_bevel');
   var totalGames = select.length;
-  let randomNumber = pickRandomNumber(1, totalGames); //Forzamos el +1, para que no elija el vacio
+  let randomNumber = pickRandomNumber(1, totalGames); //We put "1", for not chosing empty
   select.selectedIndex=randomNumber;
   select.dispatchEvent(new Event('change'));
 }
@@ -768,8 +743,6 @@ function chooseRandomEmojisForInfoShowcase(element){
     textarea.value += emojis2add;
     document.querySelector(".emoticon_container span").click();
   },3000);
-  
-  //textarea.focus();
 }
 /*Final de la seccion showcases*/
 
@@ -802,10 +775,10 @@ function loadQuotes(){
   array_quotes.push({quote:"No gods or kings. Only man.", character:"Andrew Ryan"})
   array_quotes.push({quote:"You brought this on yourself.", character:"Martin Walker"})
   array_quotes.push({quote:"If you need to learn how to talk to a lady, ask your Mum.", character:"Bayonetta"})
-  array_quotes.push({quote:"A man chooses, a slave obeys.", character:"Andre Ryan"})
+  array_quotes.push({quote:"A man chooses, a slave obeys.", character:"Andrew Ryan"})
   array_quotes.push({quote:"What is a man? A miserable little pile of secrets!", character:"Dracula", game:"Castlevania"});
   array_quotes.push({quote:"Do you have any idea how many lawyers are in hell?", character:"Ghost Rider"})
-  array_quotes.push({quote:"The cake is a lie", character:""})
+  array_quotes.push({quote:"The cake is a lie", character:"Ratman", game: "Portal"})
   array_quotes.push({quote:"If our lives are already written, it would take a courageous man to change the script.", character:"Alan Wake"})
   array_quotes.push({quote:"We are all our own worst enemy. But also our best teacher.", character:"Gouken"})
   array_quotes.push({quote:"It ain't no secret I didn't get these scars falling over in church.", character:"John Marston"})
@@ -825,7 +798,7 @@ function loadQuotes(){
   array_quotes.push({quote:"Nothing is true, everything is permitted.", character:"Ezio Auditore"})
   array_quotes.push({quote:"Snake. We're not tools of the government, or anyone else. Fighting was the only thing... the only thing I was good at. But... at least I always fought for what I believed in.", character:"Gray Fox"})
   array_quotes.push({quote:"Get over here!", character:"Scorpion"})
-  array_quotes.push({quote:"Sorry, I'm married. Can't blame you for wanting' me, though.", character:"Hawkeye"})
+  array_quotes.push({quote:"Sorry, I'm married. Can't blame you for wantin' me, though.", character:"Hawkeye"})
   array_quotes.push({quote:"Everyone thinks they’re the hero of their own story.", character:"Handsome Jack"})
   array_quotes.push({quote:"Stand in the ashes of a trillion dead souls, and asks the ghosts if honor matters. The silence is your answer.", character:"Javik"})
   array_quotes.push({quote:"If God had wanted you to live, He would not have created me!", character:"The Soldier", game:"Team Fortress 2"})
