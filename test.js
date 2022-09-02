@@ -9,7 +9,7 @@ new MutationObserver(() => {
 function onUrlChange(current) {
   if(current.startsWith("https://steamcommunity.com/profiles")){
 		let seccion = current.substr(current.indexOf("edit")+5);
-    console.log("Localizando accion para seccion " + seccion);
+    console.log("Current tab: " + seccion);
     switch(seccion){    
       case "info":
         initEditInfo()
@@ -44,7 +44,6 @@ function onUrlChange(current) {
 }
 /*Inicio de la seccion avatar*/
 function initEditInfo(){
-  console.log("Hemos llegado a INFO");
   var buttonDiv = document.getElementsByClassName("chatentry_EmoticonPickerButton_K-lPM");
   if(typeof buttonDiv[0] == 'undefined'){
     const targetNode = document.getElementById('application_root');
@@ -86,7 +85,6 @@ function createButtonRandomInfoDescription(parent){
 function chooseRandomInfoQuote(element){
 	var array_quotes = loadQuotes();
   var chosedQuote = pickRandomNumber(0, array_quotes.length -1);
-  console.log(array_quotes[chosedQuote]);
   var quote = "";
   if(array_quotes[chosedQuote].game != undefined){
     quote = "\n\"[i]" + array_quotes[chosedQuote].quote +"[/i]\" - " + array_quotes[chosedQuote].character + " (" + array_quotes[chosedQuote].game + ").";
@@ -143,7 +141,6 @@ function chooseRandomEmojis(element){
 /*Final de la seccion avatar*/
 /*Inicio de la seccion avatar*/
 function initEditAvatar(){
-  console.log("Hemos llegado a AVATAR");
   var buttonDiv = document.getElementsByClassName("profileedit_SaveCancelButtons_2KJ8a");
   if(typeof buttonDiv[0] == 'undefined'){
     const targetNode = document.getElementById('application_root');
@@ -184,15 +181,12 @@ function chooseRandomAvatar(){
   //We count if we have 1 or 2 avatarcollection_AvatarCollection_1UoAv. If we have 1, we are choosing frames, if not, we are choosing avatars
 	if(document.getElementsByClassName('avatarcollection_AvatarCollection_1UoAv').length == 1){
     if(document.getElementsByClassName("avatarcollection_FramePreview_16w1D").length != 0){
-      console.log("%c chosing frames", 'background: #222; color: #bada55');
       let contenedorMarcos = document.querySelector('.avatarcollection_CollectionGroupAvatars_wWso7');
     	contenedorMarcos.childNodes[pickRandomNumber(0, contenedorMarcos.childNodes.length)].click();
     } else{
-      console.log("%c chosing profile pic", 'background: #222; color: #bada55');
       let contenedoresAvatares = document.querySelectorAll('.avatarcollection_CollectionGroup_2kbA6 > .avatarcollection_CollectionGroupAvatars_wWso7'); //Pueden ser los comprados en la tienda de puntos o los de los juegos
       let randomContenedor = pickRandomNumber(0, contenedoresAvatares.length + 1); //We choose a random group, then a random avatar from that group
       let randomNumber = pickRandomNumber(0, contenedoresAvatares[randomContenedor].childNodes.length - 1);
-      console.log(contenedoresAvatares[randomContenedor].childNodes[randomNumber]);
       contenedoresAvatares[randomContenedor].childNodes[randomNumber].click();
     }
   } else{
@@ -478,7 +472,7 @@ function initEditShocases(){
         if(mutation.addedNodes.length != 0){
           for(var i = 0; i <= mutation.addedNodes.length; i++){
             if(mutation.addedNodes[i].className == 'newmodal'){
-             	console.log("%c Se ha abierto un modal", 'background: #222; color: #bada55'); 
+             	//console.log("%c newmodal opened", 'background: #222; color: #bada55'); 
               var elemento = mutation.addedNodes[i].querySelector(".showcase_achievement_picker");
               if(elemento != null){
                 var elementoBotones = mutation.addedNodes[i].querySelector(".showcase_achievement_picker_select_ctn");
@@ -493,16 +487,12 @@ function initEditShocases(){
         }
         var elemento = document.querySelector(".group_list_results");
         if(elemento != null){
-          console.log("%c ¡Estamos cargando las insignias o los grupos! Holy shit!", 'background: #222; color: #bada55'); 
-          console.log(elemento);
           createButtonRandomBadgeShowcase(elemento);
         }
         var test = document.querySelector(".game_list_results");
         if(test != null){
-          console.log("%c ¡comprobado fuera del if del nombre!", 'background: #222; color: red'); 
           var elementosGrupo = document.getElementsByClassName('group_list_option');
           if(elementosGrupo != null){
-            console.log("%c ¡ready para aleatorizar!", 'background: #222; color: green'); 
             createRandomGenericButtonShowcase(test);
           }
         }
@@ -536,16 +526,13 @@ function RandomizeShowcases(){
   if(showcases.length != 0){
     var positions = Array.from(Array(showcases.length).keys())
     positions = shuffleArray(positions)
-    console.log(positions);
     for (var i = 0; i <= showcases.length - 1; i++) {
       showcases[i].setAttribute("SRP_desiredOrder", positions[i]);
-      console.log(showcases[i]);
     }
     for (var j = 0; j <= showcases.length -1; j++) {
       var numero = parseInt(showcases[j].getAttribute("SRP_desiredOrder"));
       if(parseInt(numero) != parseInt(j)){
         while(j != numero){
-          console.log(numero +"!=" + j);
           if(j < numero){
             numero--;
             showcases[j].querySelector(".profile_showcase_sort_down").click();
@@ -581,9 +568,7 @@ function createButtonsRandomShowcaseContainer(){
 }
 
 function chooseRandomShowcase(button){
-  console.log(button)
   var numberElement = button.id.substr(-1);
-  console.log(numberElement);
   var activeOptions = document.querySelectorAll("#showcase_"+numberElement+"_select option:not([disabled])");
   var select = document.querySelector("#showcase_"+numberElement+"_select")
   var posible = false;
@@ -645,7 +630,6 @@ function resetGameAchievementList(){
   select.dispatchEvent(new Event('change'));
 }
 function chooseRandomGameforListAchievements(){
-  console.log("%c Opcion pulsada: juego al azar", 'background: #222; color: #bada55');
   var select = document.querySelector('.showcase_achievement_picker_select_ctn .gray_bevel');
   var totalGames = select.length;
   let randomNumber = pickRandomNumber(1, totalGames); //We put "1", for not chosing empty
@@ -654,7 +638,6 @@ function chooseRandomGameforListAchievements(){
 }
 function chooseRandomAchievement(){
   resetGameAchievementList();
-  console.log("%c Opcion pulsada: logro al azar", 'background: #222; color: #bada55');
   var targetNode = document.querySelector('.showcase_achievement_picker_list');
   var config = { attributes: false, childList: true, subtree: true };
   const callback = function(mutationList, observer) {
