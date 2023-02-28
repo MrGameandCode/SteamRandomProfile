@@ -505,6 +505,10 @@ function initEditShocases() {
   createButtonsRandomShowcaseContainer();
   createButtonRandomQuoteShowcase(document.querySelector(".emoticon_container"));
   createButtonRandomEmojiShowcase(document.querySelector(".emoticon_container"));
+  var selects = document.querySelectorAll(".profile_showcase_selection_options_ctn .gray_bevel");
+  for (i = 0; i < selects.length; ++i) {
+    selects[i].style.width = "30%";
+  }
 }
 
 function createButtonRandomShowcaseOrder(parent) {
