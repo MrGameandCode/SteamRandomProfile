@@ -502,12 +502,15 @@ function initEditShocases() {
   const observer = new MutationObserver(callback);
   observer.observe(targetNode, config);
   createButtonRandomShowcaseOrder(document.querySelector(".DialogBodyText"));
-  createButtonsRandomShowcaseContainer();
-  createButtonRandomQuoteShowcase(document.querySelector(".emoticon_container"));
-  createButtonRandomEmojiShowcase(document.querySelector(".emoticon_container"));
-  var selects = document.querySelectorAll(".profile_showcase_selection_options_ctn .gray_bevel");
-  for (i = 0; i < selects.length; ++i) {
-    selects[i].style.width = "30%";
+  if (document.querySelectorAll('[id^=button_RandomAchieventShowcase]').length == 0) {
+    alert(document.querySelectorAll('[id^=button_RandomAchieventShowcase]').length)
+    createButtonsRandomShowcaseContainer();
+    createButtonRandomQuoteShowcase(document.querySelector(".emoticon_container"));
+    createButtonRandomEmojiShowcase(document.querySelector(".emoticon_container"));
+    var selects = document.querySelectorAll(".profile_showcase_selection_options_ctn .gray_bevel");
+    for (i = 0; i < selects.length; ++i) {
+      selects[i].style.width = "30%";
+    }
   }
 }
 
