@@ -470,7 +470,7 @@ function initEditShocases() {
       if (mutation.type === 'childList') {
         //A child node has been added or removed
         if (mutation.addedNodes.length != 0) {
-          for (var i = 0; i <= mutation.addedNodes.length; i++) {
+          for (var i = 0; i <= mutation.addedNodes.length -1 ; i++) {
             if (mutation.addedNodes[i].className == 'newmodal') {
               //console.log("%c newmodal opened", 'background: #222; color: #bada55'); 
               var element = mutation.addedNodes[i].querySelector(".showcase_achievement_picker");
@@ -503,7 +503,6 @@ function initEditShocases() {
   observer.observe(targetNode, config);
   createButtonRandomShowcaseOrder(document.querySelector(".DialogBodyText"));
   if (document.querySelectorAll('[id^=button_RandomAchieventShowcase]').length == 0) {
-    alert(document.querySelectorAll('[id^=button_RandomAchieventShowcase]').length)
     createButtonsRandomShowcaseContainer();
     createButtonRandomQuoteShowcase(document.querySelector(".emoticon_container"));
     createButtonRandomEmojiShowcase(document.querySelector(".emoticon_container"));
