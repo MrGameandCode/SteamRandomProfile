@@ -1,4 +1,25 @@
 let lastUrl = location.href;
+
+//As Steam might recompile their react easily, we add all the names here and then, use them below.
+//Not the best way or clean, but this is how we are going to deal with this for now...
+let selectorClassEmojiButton = "LhNoIaEKN1cIpOrnt59wq";
+let selectorDescriptionEmojiButton = ".LhNoIaEKN1cIpOrnt59wq";
+let selectorTextAreaSummary = "[ name*=\"summary\" ]";
+let selectorEmojisDiv = "._2tnPHy-nozONfkJPqkZciP";
+let selectorEmojisClass = "._3zgndNTKG2ncwQVa-HXHBQ";
+let selectorClassSaveCancelButtons = "_2KJ8a96V8ilTQR7aQd6wsC";
+let selectorAvatarCollection = "_1UoAvYFtO-OEv3DMwZCL8A"
+let selectorAvatarCollectionFramePreview = "_2kbA6NLESf88_j1ERdI8Gv"
+let selectorAvatarImages = "._29CGQrIvjYllKwVQKe8d8R"
+let selectorAvatarFrames = "._16w1DqxiJ7Hou6al4RGELE"
+let selectorBackgroundImages = "._189ERe_A-jhzSSRw4f2Hw";
+let selectorBackgroundOptions = "._3Hc2RndZ1VBwa3ChKjT5r_";
+let selectorMiniProfilePicker = ".SMUuC8C6RWRfyx8muAw-S";
+let selectorGoldenProfilePicker = ".SMUuC8C6RWRfyx8muAw-S";
+let selectorThemePicker = ".SMUuC8C6RWRfyx8muAw-S";
+let selectorBadgePicker = ".SMUuC8C6RWRfyx8muAw-S";
+let selectorGroupPicker = ".SMUuC8C6RWRfyx8muAw-S";
+
 new MutationObserver(() => {
   const url = location.href;
   if (url !== lastUrl) {
@@ -44,17 +65,18 @@ function onUrlChange(current) {
 }
 /*Start of the section avatar*/
 function initEditInfo() {
-  var buttonDiv = document.getElementsByClassName("chatentry_EmoticonPickerButton_K-lPM");
+  var buttonDiv = document.getElementsByClassName(selectorClassEmojiButton);
   if (typeof buttonDiv[0] == 'undefined') {
-    const targetNode = document.getElementById('application_root');
+    const targetNode = document.querySelector('body');
     const config = { attributes: true, childList: true, subtree: true };
     const callback = function (mutationsList, observer) {
       for (const mutation of mutationsList) {
         if (mutation.type === 'childList') {
-          var buttonDiv = document.getElementsByClassName("chatentry_EmoticonPickerButton_K-lPM");
+          var buttonDiv = document.getElementsByClassName(selectorClassEmojiButton);
           if (typeof buttonDiv[0] != 'undefined') {
             observer.disconnect();
             createButtonRandomInfoDescription(buttonDiv[0]);
+            createButtonRandomEmojisInfoDescription(buttonDiv[0]);
           }
         }
       }
@@ -78,7 +100,7 @@ function createButtonRandomInfoDescription(parent) {
     let buttonClasses = ['DialogButton', '_DialogLayout', 'Focusable'];
     button.classList.add(...buttonClasses);
     button.innerText = 'Add Random Quote';
-    button.addEventListener("click", function (event) { event.preventDefault(); chooseRandomInfoQuote(".summary_summaryTextArea_2ipSt") });
+      button.addEventListener("click", function (event) { event.preventDefault(); chooseRandomInfoQuote(selectorTextAreaSummary) });
     parent.parentNode.insertBefore(button, parent.nextSibling);
   }
 }
@@ -108,20 +130,20 @@ function createButtonRandomEmojisInfoDescription(parent) {
     let buttonClasses = ['DialogButton', '_DialogLayout', 'Focusable'];
     button.classList.add(...buttonClasses);
     button.innerText = 'Add Random Emojis';
-    button.addEventListener("click", function (event) { event.preventDefault(); chooseRandomEmojis(".summary_summaryTextArea_2ipSt") });
+    button.addEventListener("click", function (event) { event.preventDefault(); chooseRandomEmojis(selectorTextAreaSummary) });
     parent.parentNode.insertBefore(button, parent.nextSibling);
   }
 }
 function chooseRandomEmojis(element) {
-  document.querySelector(".summary_formattingButton_LhNoI").click();
-  var divEmojis = document.querySelectorAll(".addonpicker_ItemList_2tnPH");
+  document.querySelector(selectorDescriptionEmojiButton).click();
+  var divEmojis = document.querySelectorAll(selectorEmojisDiv);
   var correctDivEmojis;
   if (divEmojis.length == 1) {
     correctDivEmojis = divEmojis[0]
   } else {
     correctDivEmojis = divEmojis[1]
   }
-  var emojis = correctDivEmojis.querySelectorAll(".emoticon_emoticon_316r8");
+  var emojis = correctDivEmojis.querySelectorAll(selectorEmojisClass);
   var arrayEmojis = [];
   if (emojis.length != 0) {
     for (var i = 0; i < emojis.length; i++) {
@@ -130,25 +152,25 @@ function chooseRandomEmojis(element) {
   }
   var randomNumberEmojis = pickRandomNumber(1, arrayEmojis.length);
   var emojis2add = "";
-  document.querySelector(".summary_formattingButton_LhNoI").click();
+  document.querySelector(selectorDescriptionEmojiButton).click();
   for (var i = 0; i < randomNumberEmojis; i++) {
     emojis2add += arrayEmojis[pickRandomNumber(1, arrayEmojis.length - 1)];
   }
-  var textarea = document.querySelector(".summary_summaryTextArea_2ipSt");
+  var textarea = document.querySelector(selectorTextAreaSummary);
   textarea.value += emojis2add;
   textarea.focus();
 }
 /*End of the section avatar*/
 /*Start of the section avatar*/
 function initEditAvatar() {
-  var buttonDiv = document.getElementsByClassName("profileedit_SaveCancelButtons_2KJ8a");
+  var buttonDiv = document.getElementsByClassName(selectorClassSaveCancelButtons);
   if (typeof buttonDiv[0] == 'undefined') {
-    const targetNode = document.getElementById('application_root');
+    const targetNode = document.querySelector('body');
     const config = { attributes: true, childList: true, subtree: true };
     const callback = function (mutationsList, observer) {
       for (const mutation of mutationsList) {
         if (mutation.type === 'childList') {
-          var buttonDiv = document.getElementsByClassName("profileedit_SaveCancelButtons_2KJ8a");
+          var buttonDiv = document.getElementsByClassName(selectorClassSaveCancelButtons);
           if (typeof buttonDiv[0] != 'undefined') {
             observer.disconnect();
             createButtonRandomAvatar(buttonDiv[0]);
@@ -179,15 +201,14 @@ function createButtonRandomAvatar(parent) {
 
 function chooseRandomAvatar() {
   //We count if we have 1 or 2 avatarcollection_AvatarCollection_1UoAv. If we have 1, we are choosing frames, if not, we are choosing avatars
-  if (document.getElementsByClassName('avatarcollection_AvatarCollection_1UoAv').length == 1) {
-    if (document.getElementsByClassName("avatarcollection_FramePreview_16w1D").length != 0) {
-      let containerFrames = document.querySelector('.avatarcollection_CollectionGroupAvatars_wWso7');
-      containerFrames.childNodes[pickRandomNumber(0, containerFrames.childNodes.length)].click();
+  if (document.getElementsByClassName(selectorAvatarCollection).length == 1) {
+    if (document.getElementsByClassName(selectorAvatarCollectionFramePreview).length != 1) {
+      let containerFrames = document.querySelectorAll(selectorAvatarImages);
+      containerFrames[pickRandomNumber(0, containerFrames.length)].click();
     } else {
-      let containersAvatars = document.querySelectorAll('.avatarcollection_CollectionGroup_2kbA6 > .avatarcollection_CollectionGroupAvatars_wWso7'); //Pueden ser los comprados en la tienda de puntos o los de los juegos
-      let randomContainer = pickRandomNumber(0, containersAvatars.length + 1); //We choose a random group, then a random avatar from that group
-      let randomNumber = pickRandomNumber(0, containersAvatars[randomContainer].childNodes.length - 1);
-      containersAvatars[randomContainer].childNodes[randomNumber].click();
+      let containersAvatars = document.querySelectorAll(selectorAvatarFrames); 
+      let randomContainer = pickRandomNumber(0, containersAvatars.length + 1); 
+      containersAvatars[randomContainer].click();
     }
   } else {
     alert("You must choose between avatars of frames first");
@@ -196,14 +217,14 @@ function chooseRandomAvatar() {
 /*End of the section avatar*/
 /*Start of the section background*/
 function initEditBackground() {
-  var buttonDiv = document.getElementsByClassName("profileedit_SaveCancelButtons_2KJ8a");
+  var buttonDiv = document.getElementsByClassName(selectorClassSaveCancelButtons);
   if (typeof buttonDiv[0] == 'undefined') {
-    const targetNode = document.getElementById('application_root');
+    const targetNode = document.querySelector('body');
     const config = { attributes: true, childList: true, subtree: true };
     const callback = function (mutationsList, observer) {
       for (const mutation of mutationsList) {
         if (mutation.type === 'childList') {
-          var buttonDiv = document.getElementsByClassName("profileedit_SaveCancelButtons_2KJ8a");
+          var buttonDiv = document.getElementsByClassName(selectorClassSaveCancelButtons);
           if (typeof buttonDiv[0] != 'undefined') {
             observer.disconnect();
             createButtonRandomBackground(buttonDiv[0]);
@@ -233,27 +254,27 @@ function createButtonRandomBackground(parent) {
 }
 
 function chooseRandomBackground() {
-  let containerBackgrounds = document.querySelector('.profileedit_ItemPickerList_SMUuC');
+  let containerBackgrounds = document.querySelectorAll(selectorBackgroundImages);
   if (containerBackgrounds != null) {
-    let randomNumber = pickRandomNumber(0, containerBackgrounds.childNodes.length + 1);
-    containerBackgrounds.childNodes[randomNumber].click();
+    let randomNumber = pickRandomNumber(0, containerBackgrounds.length + 1);
+    containerBackgrounds[randomNumber].click();
   }
-  let optionsBackground = document.querySelector('.profilebackground_ProfileBackgroundEquipOptions_RS77U');
+  let optionsBackground = document.querySelectorAll(selectorBackgroundOptions);
   if (optionsBackground != null) {
-    optionsBackground.childNodes[pickRandomNumber(0, optionsBackground.childNodes.length + 1)].childNodes[0].click()
+    optionsBackground[pickRandomNumber(0, optionsBackground.length)].childNodes[0].click()
   }
 }
 /*End of the section background*/
 /*Start of the section miniprofile*/
 function initEditMiniProfile() {
-  var buttonDiv = document.getElementsByClassName("profileedit_SaveCancelButtons_2KJ8a");
+  var buttonDiv = document.getElementsByClassName(selectorClassSaveCancelButtons);
   if (typeof buttonDiv[0] == 'undefined') {
-    const targetNode = document.getElementById('application_root');
+    const targetNode = document.querySelector('body');
     const config = { attributes: true, childList: true, subtree: true };
     const callback = function (mutationsList, observer) {
       for (const mutation of mutationsList) {
         if (mutation.type === 'childList') {
-          var buttonDiv = document.getElementsByClassName("profileedit_SaveCancelButtons_2KJ8a");
+          var buttonDiv = document.getElementsByClassName(selectorClassSaveCancelButtons);
           if (typeof buttonDiv[0] != 'undefined') {
             observer.disconnect();
             createButtonRandomMiniProfile(buttonDiv[0]);
@@ -281,7 +302,7 @@ function createButtonRandomMiniProfile(parent) {
   }
 }
 function chooseRandomMiniProfile() {
-  let containerMiniProfiles = document.querySelector('.profileedit_ItemPickerList_SMUuC');
+  let containerMiniProfiles = document.querySelector(selectorMiniProfilePicker);
   if (containerMiniProfiles != null) {
     containerMiniProfiles.childNodes[pickRandomNumber(0, containerMiniProfiles.childNodes.length - 1)].click();
   }
@@ -289,14 +310,14 @@ function chooseRandomMiniProfile() {
 /*End of the section miniprofile*/
 /*Start of the section goldenprofile*/
 function initEditGoldenProfile() {
-  var buttonDiv = document.getElementsByClassName("profileedit_SaveCancelButtons_2KJ8a");
+  var buttonDiv = document.getElementsByClassName(selectorClassSaveCancelButtons);
   if (typeof buttonDiv[0] == 'undefined') {
-    const targetNode = document.getElementById('application_root');
+    const targetNode = document.querySelector('body');
     const config = { attributes: true, childList: true, subtree: true };
     const callback = function (mutationsList, observer) {
       for (const mutation of mutationsList) {
         if (mutation.type === 'childList') {
-          var buttonDiv = document.getElementsByClassName("profileedit_SaveCancelButtons_2KJ8a");
+          var buttonDiv = document.getElementsByClassName(selectorClassSaveCancelButtons);
           if (typeof buttonDiv[0] != 'undefined') {
             observer.disconnect();
             createButtonRandomGoldenProfile(buttonDiv[0]);
@@ -324,7 +345,7 @@ function createButtonRandomGoldenProfile(parent) {
   }
 }
 function chooseRandomGoldenProfile() {
-  let contenainerProfiles = document.querySelector('.profileedit_ItemPickerList_SMUuC');
+  let contenainerProfiles = document.querySelector(selectorGoldenProfilePicker);
   if (contenainerProfiles != null) {
     contenainerProfiles.childNodes[pickRandomNumber(0, contenainerProfiles.childNodes.length - 1)].click();
   }
@@ -332,14 +353,14 @@ function chooseRandomGoldenProfile() {
 /*End of the section goldenprofile*/
 /*Start of the section theme*/
 function initEditTheme() {
-  var buttonDiv = document.getElementsByClassName("profileedit_SaveCancelButtons_2KJ8a");
+  var buttonDiv = document.getElementsByClassName(selectorClassSaveCancelButtons);
   if (typeof buttonDiv[0] == 'undefined') {
-    const targetNode = document.getElementById('application_root');
+    const targetNode = document.querySelector('body');
     const config = { attributes: true, childList: true, subtree: true };
     const callback = function (mutationsList, observer) {
       for (const mutation of mutationsList) {
         if (mutation.type === 'childList') {
-          var buttonDiv = document.getElementsByClassName("profileedit_SaveCancelButtons_2KJ8a");
+          var buttonDiv = document.getElementsByClassName(selectorClassSaveCancelButtons);
           if (typeof buttonDiv[0] != 'undefined') {
             observer.disconnect();
             createButtonRandomTheme(buttonDiv[0]);
@@ -367,7 +388,7 @@ function createButtonRandomTheme(parent) {
   }
 }
 function chooseRandomTheme() {
-  let containerThemes = document.querySelector('.profileedit_ItemPickerList_SMUuC');
+  let containerThemes = document.querySelector(selectorThemePicker);
   if (containerThemes != null) {
     containerThemes.childNodes[pickRandomNumber(0, containerThemes.childNodes.length - 1)].click();
   }
@@ -376,14 +397,14 @@ function chooseRandomTheme() {
 /*End of the section theme*/
 /*Start of the section favoritebadge*/
 function initEditFavouriteBadge() {
-  var buttonDiv = document.getElementsByClassName("profileedit_SaveCancelButtons_2KJ8a");
+  var buttonDiv = document.getElementsByClassName(selectorClassSaveCancelButtons);
   if (typeof buttonDiv[0] == 'undefined') {
-    const targetNode = document.getElementById('application_root');
+    const targetNode = document.querySelector('body');
     const config = { attributes: true, childList: true, subtree: true };
     const callback = function (mutationsList, observer) {
       for (const mutation of mutationsList) {
         if (mutation.type === 'childList') {
-          var buttonDiv = document.getElementsByClassName("profileedit_SaveCancelButtons_2KJ8a");
+          var buttonDiv = document.getElementsByClassName(selectorClassSaveCancelButtons);
           if (typeof buttonDiv[0] != 'undefined') {
             observer.disconnect();
             createButtonRandomFavouriteBadge(buttonDiv[0]);
@@ -411,7 +432,7 @@ function createButtonRandomFavouriteBadge(parent) {
   }
 }
 function chooseRandomFavouriteBadge() {
-  let containerBadges = document.querySelector('.profileedit_ItemPickerList_SMUuC');
+  let containerBadges = document.querySelector(selectorBadgePicker);
   if (containerBadges != null) {
     containerBadges.childNodes[pickRandomNumber(0, containerBadges.childNodes.length - 1)].click();
   }
@@ -419,14 +440,14 @@ function chooseRandomFavouriteBadge() {
 /*End of the section favoritebadge*/
 /*Start of the section favoritegroup*/
 function initEditFavouriteGroup() {
-  var buttonDiv = document.getElementsByClassName("profileedit_SaveCancelButtons_2KJ8a");
+  var buttonDiv = document.getElementsByClassName(selectorClassSaveCancelButtons);
   if (typeof buttonDiv[0] == 'undefined') {
-    const targetNode = document.getElementById('application_root');
+    const targetNode = document.querySelector('body');
     const config = { attributes: true, childList: true, subtree: true };
     const callback = function (mutationsList, observer) {
       for (const mutation of mutationsList) {
         if (mutation.type === 'childList') {
-          var buttonDiv = document.getElementsByClassName("profileedit_SaveCancelButtons_2KJ8a");
+          var buttonDiv = document.getElementsByClassName(selectorClassSaveCancelButtons);
           if (typeof buttonDiv[0] != 'undefined') {
             observer.disconnect();
             createButtonRandomFavouriteGroup(buttonDiv[0]);
@@ -454,7 +475,7 @@ function createButtonRandomFavouriteGroup(parent) {
   }
 }
 function chooseRandomFavouriteGroup() {
-  let containerGroups = document.querySelector('.profileedit_ItemPickerList_SMUuC');
+  let containerGroups = document.querySelector(selectorGroupPicker);
   if (containerGroups != null) {
     containerGroups.childNodes[pickRandomNumber(0, containerGroups.childNodes.length - 1)].click();
   }
@@ -762,6 +783,8 @@ function shuffleArray(array) {
 function loadQuotes() {
   var arrayQuotes = []
   arrayQuotes.push({ quote: "No gods or kings. Only man.", character: "Andrew Ryan" })
+  arrayQuotes.push({ quote: "Okay, I would ask nicely for some of your giant bass strings, but you don't strike me as the negotiating type, so out of personal respect, I'll just get right to the ass-kickin'", character: "Eddie Riggs" })
+  arrayQuotes.push({ quote: "I'm supposed to think you're a nun but I know you're really some kind of big ugly demon, so lets have it. Aha! See? I knew it - big ugly demon! ... Kinda sexy though, in a weird way.", character: "Eddie Riggs" })
   arrayQuotes.push({ quote: "You brought this on yourself.", character: "Martin Walker" })
   arrayQuotes.push({ quote: "The best solution to a problem is usually the easiest one. And I'll be honest - killing you is hard. You know what my days used to be like? I just tested. Nobody murdered me, or put me in a potato, or fed me to birds. I had a pretty good life. And then you showed up. You dangerous, mute lunatic. So you know what? You win. Just go. It's been fun. Don't come back.", character: "GLaDOS" })
   arrayQuotes.push({ quote: "Is your cause just or is that what you tell yourself? ", character: "Samuel Rodriguez", game: "Metal Gear Rising" })
@@ -771,19 +794,27 @@ function loadQuotes() {
   arrayQuotes.push({ quote: "Ain't ready for the big leagues yet, kid. Back to the minors with ya.", character: "Wolverine", game: "Ultimate Marvel vs Capcom 3" })
   arrayQuotes.push({ quote: "Yo, bucket-head! Let's have some fun.", character: "Wolverine", game: "Ultimate Marvel vs Capcom 3" })
   arrayQuotes.push({ quote: "Do you have any idea how many lawyers are in hell?", character: "Ghost Rider" })
+  arrayQuotes.push({ quote: "DECAPITATIOOOOOOOOOOOOOOOOOOOOON!!!", character: "Eddie Riggs" })
+  arrayQuotes.push({ quote: "Defend this pile of crap with your very lives!", character: "Eddie Riggs" })
   arrayQuotes.push({ quote: "The cake is a lie", character: "Ratman", game: "Portal" })
   arrayQuotes.push({ quote: "Science isn't about why! It’s about why not!", character: "Cave Johnson" })
   arrayQuotes.push({ quote: "Pain... this is why I fight.", character: "Jack the Ripper", game: "Metal Gear Rising" })
   arrayQuotes.push({ quote: "My sword is a tool of justice.", character: "Raiden", game: "Metal Gear Rising" })
   arrayQuotes.push({ quote: "If our lives are already written, it would take a courageous man to change the script.", character: "Alan Wake" })
+  arrayQuotes.push({ quote: "Wow, the shit you say sometimes makes me wanna smack you.", character: "Kreese Kreely", game: "Madworld" })
+  arrayQuotes.push({ quote: "Yeah, that's not bad, but back in the day I tossed a couple of guys into the dumpster and really watched the chunks fly!", character: "Kreese Kreely", game: "Madworld" })
   arrayQuotes.push({ quote: "We are all our own worst enemy. But also our best teacher.", character: "Gouken" })
   arrayQuotes.push({ quote: "It ain't no secret I didn't get these scars falling over in church.", character: "John Marston" })
   arrayQuotes.push({ quote: "I'll make you wish you were facing Magneto.", character: "Doctor Doom", game: "Ultimate Marvel vs Capcom 3" })
   arrayQuotes.push({ quote: "You will reveal to me the source of your power, or you will die!", character: "Doctor Doom", game: "Ultimate Marvel vs Capcom 3" })
+  arrayQuotes.push({ quote: "Ever feel like you were born in the wrong time - like you should have been born earlier, when the music was... real? Earlier... like the early seventies.", character: "Eddie Riggs" })
+  arrayQuotes.push({ quote: "A good roadie knows his whole job is to make someone else look good, keep someone else safe, help someone else do what they were put here to do. A good roadie stays out of the spotlight. If he's doing his job right, you don't even know he's there. Once in a while he might step on stage just to fix a problem, to set something right. But then before you even realize he was there or what he did, he's gone.", character: "Eddie Riggs" })
   arrayQuotes.push({ quote: "Here's a touchin' story. Once upon a time you died, and I lived happily ever after. The end.", character: "The Sniper", game: "Team Fortress 2" })
   arrayQuotes.push({ quote: "Shadow and light are two sides of the same coin, one cannot exist without the other.", character: "Princess Zelda" })
   arrayQuotes.push({ quote: "When life gives you lemons, don't make lemonade. Make life take the lemons back! Get mad! I don't want your damn lemons! What am I supposed to do with these?! Demand to see life's manager! Make life rue the day it thought it could give Cave Johnson lemons! Do you know who I am?! I'm the man who's gonna burn your house down! With the lemons! I'm gonna get my engineers to invent a combustible lemon that burns your house down!", character: "Cave Johnson" })
   arrayQuotes.push({ quote: "I raised you, and loved you, I've given you weapons, taught you techniques, endowed you with knowledge. There's nothing more for me to give you. All that's left for you to take is my life.", character: "The Boss", game: "Metal Gear Solid 3" })
+  arrayQuotes.push({ quote: "There's somethin' about the sound of a grown man screaming in terror that just makes me happy.", character: "Kreese Kreely", game: "Madworld" })
+  arrayQuotes.push({ quote: "You, sir, are a fucking idiot!", character: "Kreese Kreely", game: "Madworld" })
   arrayQuotes.push({ quote: "At the end of the day, as long as there are two people left on the planet, someone is gonna want someone dead.", character: "The Sniper", game: "Team Fortress 2" })
   arrayQuotes.push({ quote: "The Lord Forgives Everything, But I'm Just A Prophet...So I Don't Have To. Amen.", character: "Father Comstock" })
   arrayQuotes.push({ quote: "You ever thought of therapy? All you do is get pissed off at and with just about anything and anyone. I'm attempting conversation here with you.", character: "Agent G" })
@@ -793,6 +824,8 @@ function loadQuotes() {
   arrayQuotes.push({ quote: "Like I said, kids are cruel, Jack. And I'm very in touch with my inner child.", character: "Sundowner", game: "Metal Gear Rising" })
   arrayQuotes.push({ quote: "I'm fucking INVINCIBLE!", character: "Sundowner", game: "Metal Gear Rising" })
   arrayQuotes.push({ quote: "Home? We can't go home. There's a line men like us have to cross. If we're lucky, we do what's necessary, then we die. No, all I really want, Captain, is peace.", character: "John Konrad" })
+  arrayQuotes.push({ quote: "Obviously, you never fucked an onion.", character: "Howard 'Buckshot' Holmes", game: "Madworld" })
+  arrayQuotes.push({ quote: "Stay off the drugs kids. Drink booze like I do.", character: "Howard 'Buckshot' Holmes", game: "Madworld" })
   arrayQuotes.push({ quote: "You’ve met with a terrible fate, haven’t you?", character: "Happy Mask Salesman" })
   arrayQuotes.push({ quote: "War is when the young and stupid are tricked by the old and bitter into killing each other.", character: "Niko Bellic" })
   arrayQuotes.push({ quote: "Love Is Just A Chemical, We Give It Meaning By Choice.", character: "Eleanor Lamb" })
@@ -804,6 +837,8 @@ function loadQuotes() {
   arrayQuotes.push({ quote: "Witchers were made to kill monsters. It doesn't matter who posted the notice, the coin has to be right, that's all.", character: "Geralt of Rivia", game: "The Witcher 3" })
   arrayQuotes.push({ quote: "Nothing is true, everything is permitted.", character: "Ezio Auditore" })
   arrayQuotes.push({ quote: "You should try fighting for what you believe in sometime, Jack. Not for a company, or for a nation, or for anyone else.", character: "Senator Armstrong", game: "Metal Gear Rising" })
+  arrayQuotes.push({ quote: "Dude, are you off your meds again?", character: "Kreese Kreely", game: "Madworld" })
+  arrayQuotes.push({ quote: "You can load that many bats up your ass? Call me impressed!", character: "Howard 'Buckshot' Holmes", game: "Madworld" })
   arrayQuotes.push({ quote: "But you did survive! Through sheer force of will, following your own set of rules. With your own two hands, you took back your live!", character: "Senator Armstrong", game: "Metal Gear Rising" })
   arrayQuotes.push({ quote: "Snake. We're not tools of the government, or anyone else. Fighting was the only thing... the only thing I was good at. But... at least I always fought for what I believed in.", character: "Gray Fox" })
   arrayQuotes.push({ quote: "Get over here!", character: "Scorpion" })
@@ -817,6 +852,8 @@ function loadQuotes() {
   arrayQuotes.push({ quote: "Keep the gods out of it. Swear on your heads. Which I will take if you break your vow.", character: "Geralt of Rivia", game: "The Witcher 3" })
   arrayQuotes.push({ quote: "Don't make a girl a promise... If you know you can't keep it.", character: "Cortana" })
   arrayQuotes.push({ quote: "Did I ever tell you the definition of insanity?", character: "Vaas Montenegro" })
+  arrayQuotes.push({ quote: "Who the hell is still a virgin by the time they're at their prom?", character: "Kreese Kreely", game: "Madworld" })
+  arrayQuotes.push({ quote: "Oh man. Don't tell me I've been slayin' hot girls this whole time.", character: "Eddie Riggs" })
   arrayQuotes.push({ quote: "Jeremy. Someday, people will tell you about your father. For that, I'm sorry. I love you.", character: "John Konrad" })
   arrayQuotes.push({ quote: "It’s time to kick ass and chew bubble gum…and I’m all outta gum.", character: "Duke Nukem" });
   arrayQuotes.push({ quote: "Maybe I was wrong about you... I was wrong. You're not greedy -- you're bat-shit insane!", character: "Raiden", game: "Metal Gear Rising" })
@@ -833,7 +870,7 @@ function loadQuotes() {
   arrayQuotes.push({ quote: "Boss... you were right. It's not about changing the world. It's about doing our best to leave the world... the way it is. It's about respecting the will of others, and believing in your own.", character: "Big Boss" })
   arrayQuotes.push({ quote: "NOTHING IS MORE BADASS THAN TREATING A WOMAN WITH RESPECT!", character: "Mr. Torgue" })
   arrayQuotes.push({ quote: "You are not a good person. You know that, right? Good people don't end up here.", character: "GLaDOS" })
-  arrayQuotes.push({ quote: "A MadWorld... I'll fit right in.", character: "Jack Cayman" })
+  arrayQuotes.push({ quote: "A MadWorld... I'll fit right in.", character: "Jack Cayman", game: "Madworld" })
   arrayQuotes.push({ quote: "I'll have two number 9s, a number 9 large, a number 6 with extra dip, a number 7, two number 45s, one with cheese, and a large soda.", character: "Big Smoke" })
   arrayQuotes.push({ quote: "The right man in the wrong place can make all the difference in the world. So, wake up, Mister Freeman. Wake up and...", character: "G-man" })
   arrayQuotes.push({ quote: "Typical politician... bug promises, but all talk.", character: "Raiden", game: "Metal Gear Rising" })
@@ -848,6 +885,9 @@ function loadQuotes() {
   arrayQuotes.push({ quote: "Act like jerks, your planet gets eaten. It's called karma, dude.", character: "Nova", game: "Ultimate Marvel vs Capcom 3" })
   arrayQuotes.push({ quote: "Brother, you ugly. But not just ugly, like BIBLICAL ugly. Like 'you could model for death threads' ugly.", character: "Deadpool" })
   arrayQuotes.push({ quote: "Check me out. I'm the Ghost of Christmas 'Kick Your Ass'!", character: "Deadpool", game: "Ultimate Marvel vs Capcom 3" })
+  arrayQuotes.push({ quote: "I'm going to tell you ladies a secret: I hate losing!", character: "The Soldier", game: "Team Fortress 2" })
+  arrayQuotes.push({ quote: "You know... make trophies and stuff. Check out my necklace of human ears.", character: "Kreese Kreely", game: "Madworld" })
+  arrayQuotes.push({ quote: "Check out my stream of projectile vomit! blaaargh!", character: "Howard 'Buckshot' Holmes", game: "Madworld" })
   arrayQuotes.push({ quote: "At times we must purge things from this world because they should not exist. Even if it means losing someone that you love.", character: "Francis York Morgan", game: "Deadly Premonition" })
   arrayQuotes.push({ quote: "My coffee warned me about it.", character: "Francis York Morgan", game: "Deadly Premonition" })
 
